@@ -23,16 +23,16 @@ Sistem akan melakukan:
 
 Membaca data dari SensorA   
 
-Menganalisis tingkat risiko:  
-Ancaman: Magnitudo ≥ 7.0 & kedalaman < 60 km  
-Bahaya: Magnitudo ≥ 6.0 & kedalaman < 300 km  
-Normal: Magnitudo ≥ 5.0   
+Menganalisis tingkat risiko: 
+- Ancaman Serius
+- Bahaya
+- Terasa
+- Tidak Signifikan
 
-Setelah menganalisis sistem akan  
-Mengirim notifikasi simulasi ke SMS & Email  
+Setelah menganalisis sistem akan    
+Mengirim notifikasi simulasi ke SMS, Email dan Telegram    
  
-Mencatat aktivitas ke:  
-Terminal (console)  
-File: system.log  
+Mencatat aktivitas ke: 
+- Terminal (console)  
+- File: system.log  
     
----
