@@ -1,6 +1,6 @@
 from utils.logger import FileLogger, ConsoleLogger, MultiLogger
 from repositories import InMemoryEqRepository
-from services import SeismicAlertService, PemberitahuSMS, PemberitahuEmail, SensorA, SensorB
+from services import SeismicAlertService, PemberitahuSMS, PemberitahuEmail, PemberitahuTelegram, SensorA, SensorB
 
 def main():
     file_logger = FileLogger("system.log")
@@ -10,13 +10,18 @@ def main():
     logger.info("Sistem pemantauan gempa dimulai...")
 
     try:
-        sensorA = SensorA("Sensor-A-Puncak", "", logger)
+        sensorA = SensorA("Sensor-A-Laut", "Laut Selatan", logger)
+        # Objek konkret
         repo = InMemoryEqRepository()
+
+        # Dependency Injection
         alert_service = SeismicAlertService(repo, logger)
 
+        # OCP (Open/Closed Principle)
         sms_notifier = PemberitahuSMS("082152296778", logger)
         email_notifier = PemberitahuEmail("kelompok_1@umkt.ac.id", logger)
-        daftar_pemberitahu = [sms_notifier, email_notifier]
+        telegram_notifier = PemberitahuTelegram("082142267777", logger)
+        daftar_pemberitahu = [sms_notifier, email_notifier, telegram_notifier]
 
         data_gempa_a = sensorA.baca_data()
       

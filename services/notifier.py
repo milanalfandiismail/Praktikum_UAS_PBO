@@ -66,3 +66,28 @@ class PemberitahuEmail(IPemberitahu):
         """
         pesan = f"[Email ke {self.__email}] Peringatan Gempa : {peringatan.get_tingkat()}"
         self.__logger.info(pesan)
+
+class PemberitahuTelegram(IPemberitahu):
+    """Pengirim notifikasi melalui telegram.
+
+    Mensimulasikan pengiriman pesan telegram ke nomor tertentu.
+    """
+
+    def __init__(self, telegram: str, logger: ILogger):
+        """Inisialisasi pengirim email.
+
+        Args:
+            telegram (str): Nomor telepon penerima.
+            logger (ILogger): Utilitas untuk mencatat aktivitas pengiriman.
+        """
+        self.__telegram = telegram
+        self.__logger = logger
+
+    def kirim(self, peringatan: Peringatan) -> None:
+        """Kirim notifikasi email berisi tingkat peringatan.
+
+        Args:
+            peringatan (Peringatan): Objek peringatan yang akan dikirim.
+        """
+        pesan = f"[Telegram ke {self.__telegram}] Peringatan Gempa : {peringatan.get_tingkat()}"
+        self.__logger.info(pesan)

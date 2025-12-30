@@ -51,5 +51,10 @@ class DataGempa:
         if kedalaman < 0:
             raise ValueError("Kedalaman tidak boleh negatif")
         self.__kedalaman = kedalaman
+    
+    def set_magnitude(self, magnitude: float) -> None:
+        if magnitude < 0:
+            raise ValueError("Magnitude tidak boleh negatif")
+        self.__magnitude = magnitude
 
     
