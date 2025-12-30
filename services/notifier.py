@@ -74,17 +74,17 @@ class PemberitahuTelegram(IPemberitahu):
     """
 
     def __init__(self, telegram: str, logger: ILogger):
-        """Inisialisasi pengirim email.
+        """Inisialisasi pengirim telegram.
 
         Args:
-            telegram (str): Nomor telepon penerima.
+            telegram (str): Nomor telepon telegram penerima.
             logger (ILogger): Utilitas untuk mencatat aktivitas pengiriman.
         """
         self.__telegram = telegram
         self.__logger = logger
 
     def kirim(self, peringatan: Peringatan) -> None:
-        """Kirim notifikasi email berisi tingkat peringatan.
+        """Kirim notifikasi telegram berisi tingkat peringatan.
 
         Args:
             peringatan (Peringatan): Objek peringatan yang akan dikirim.

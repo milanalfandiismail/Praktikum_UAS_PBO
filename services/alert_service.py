@@ -27,9 +27,11 @@ class SeismicAlertService(IAlertService):
 
     Menggunakan repositori untuk menyimpan data dan logger untuk mencatat aktivitas.
     Logika penentuan tingkat risiko:
-        - Critical: magnitude >= 6.5 dan kedalaman < 30 km
-        - Warning: magnitude >= 5.0 dan kedalaman < 70 km
-        - Normal: selainnya
+        - Ancaman Serius: magnitude >= 7.0 dan kedalaman <= 60 km
+        - Bahaya : magnitude >= 6.0 dan kedalaman <= 300
+        - Terasa: magnitude >= 5.0 
+        - Tidak signifikan: selainnya
+        - Data tidak valid : <= 0 atau kedalaman < 0
     """
 
     def __init__(self, repo: IEqRepository, logger: ILogger):

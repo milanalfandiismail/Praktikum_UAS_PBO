@@ -5,7 +5,7 @@ Mendeteksi gempa, menganalisis risiko, menyimpan data, dan mengirim notifikasi.
 
 ## Struktur data Proyek
 
-UAS_Kelompok_1/  
+UAS_Enviro_Kelompok_1/  
 ├── models/ # Entitas data: DataGempa, Peringatan  
 ├── repositories/ # Penyimpanan data: InMemoryEqRepository  
 ├── services/ # Logika bisnis: Sensor, Alert_Service, Notifier  
