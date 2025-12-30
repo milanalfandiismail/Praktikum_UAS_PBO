@@ -1,1 +1,1 @@
-from .logger import ILogger, FileLogger
+from .logger import ILogger, FileLogger, ConsoleLogger, MultiLogger

@@ -1,42 +1,41 @@
-from utils.logger import FileLogger
+from utils.logger import FileLogger, ConsoleLogger, MultiLogger
 from repositories import InMemoryEqRepository
 from services import SeismicAlertService, PemberitahuSMS, PemberitahuEmail, SensorA, SensorB
 
 def main():
-    # Inisialisasi logger
-    logger = FileLogger("system.log")
+    file_logger = FileLogger("system.log")
+    console_logger = ConsoleLogger()
+    logger = MultiLogger(file_logger, console_logger)
 
-    # Inisialisasi repository
-    repo = InMemoryEqRepository()
-
-    # Inisialisasi alert service
-    alert_service = SeismicAlertService(repo, logger)
-
-    # Inisialisasi notifiers
-    sms_notifier = PemberitahuSMS("08123456789", logger)
-    email_notifier = PemberitahuEmail("admin@enviro.id", logger)
-    daftar_pemberitahu = [sms_notifier, email_notifier]
-
-    # Inisialisasi sensor (contoh: pakai SensorA)
-    sensor = SensorA("Sensor-A-Puncak", "Puncak, Jawa Barat", logger)
-
-    # Simulasi jalankan sistem
-    logger.catat("Sistem pemantauan gempa dimulai...")
+    logger.info("Sistem pemantauan gempa dimulai...")
 
     try:
-        data_gempa = sensor.baca_data()
-        peringatan = alert_service.analisa_dan_peringatkan(data_gempa)
+        sensorA = SensorA("Sensor-A-Puncak", "", logger)
+        repo = InMemoryEqRepository()
+        alert_service = SeismicAlertService(repo, logger)
 
-        # Kirim peringatan ke semua pemberitahu
-        for pemberitahu in daftar_pemberitahu:
-            pemberitahu.kirim(peringatan)
+        sms_notifier = PemberitahuSMS("082152296778", logger)
+        email_notifier = PemberitahuEmail("kelompok_1@umkt.ac.id", logger)
+        daftar_pemberitahu = [sms_notifier, email_notifier]
 
-        print(f"[INFO] Peringatan tingkat '{peringatan.get_tingkat()}' telah dikirim.")
-        print(f"Magnitudo: {data_gempa.get_magnitude()}, Kedalaman: {data_gempa.get_kedalaman()} km")
+        data_gempa_a = sensorA.baca_data()
+      
+        daftar_data = [data_gempa_a]
+
+        daftar_peringatan = []
+        for data in daftar_data:
+            peringatan = alert_service.analisa_dan_peringatkan(data)
+            daftar_peringatan.append(peringatan)
+
+        for peringatan in daftar_peringatan:
+            for pemberitahu in daftar_pemberitahu:
+                pemberitahu.kirim(peringatan)
+
+        # Log ringkasan
+        logger.info("Proses selesai: semua data gempa telah dianalisis dan notifikasi dikirim.")
 
     except Exception as e:
-        logger.catat(f"Terjadi kesalahan: {str(e)}")
-        print(f"Error: {str(e)}")
+        logger.error(f"Kesalahan sistem: {str(e)}")
 
 if __name__ == "__main__":
     main()

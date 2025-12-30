@@ -10,12 +10,35 @@ class IAlertService(ABC):
         pass
 
 class SeismicAlertService(IAlertService):
+
     def __init__(self, repo: IEqRepository, logger: ILogger):
         self.__repo = repo
         self.__logger = logger
 
+    def _tentukan_tingkat(self, data: DataGempa) -> str:
+        magnitude = data.get_magnitude()
+        kedalaman = data.get_kedalaman()
+        if magnitude <= 0 or kedalaman < 0:
+            return "Data tidak valid"
+
+        if magnitude >= 7.0 and kedalaman <= 60:
+            return "Ancaman Serius"
+
+        # Berbahaya
+        elif magnitude >= 6.0 and kedalaman <= 300:
+            return "Bahaya"
+
+        # Terasa
+        elif magnitude >= 5.0:
+            return "Terasa"
+
+        # Normal
+        else:
+            return "Tidak signifikan"
+
     def analisa_dan_peringatkan(self, data: DataGempa) -> Peringatan:
         self.__repo.simpan(data)
-        peringatan = Peringatan(data)
-        self.__logger.catat(f"Data gempa disimpan dan analisis: {peringatan.get_tingkat()}")
+        tingkat = self._tentukan_tingkat(data)
+        peringatan = Peringatan(data, tingkat)
+        self.__logger.info(f"Analisis selesai: tingkat = {tingkat}")
         return peringatan
